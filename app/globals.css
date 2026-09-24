@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+/* Salt & Blade tokens. Harbour ink instead of plain black ties the palette to the sea
+   two blocks away; brass is the razor and the old chair fittings; pole red appears only
+   in the barber-pole stripe. All text pairs checked at 4.5:1 or better. */
+@theme {
+  --color-ink: #13201f;        /* page background */
+  --color-ink-2: #1a2a28;      /* raised surfaces */
+  --color-ink-3: #243634;      /* borders on dark */
+  --color-salt: #f1ece2;       /* primary text on dark (14.6:1 on ink) */
+  --color-salt-2: #e4ddd0;     /* light section background */
+  --color-rope: #9aa9a3;       /* secondary text on dark (6.3:1 on ink) */
+  --color-brass: #cfa55b;      /* accent and primary buttons (7.6:1 on ink) */
+  --color-brass-2: #dcb877;    /* brass hover */
+  --color-brass-deep: #7a5a1e; /* brass on light backgrounds (5.6:1 on salt) */
+  --color-pole: #b23a2e;       /* barber pole red, decorative only */
+  --color-danger: #f29a8f;     /* errors on dark (8:1 on ink) */
+  --color-success: #8fd1a8;
+
+  --font-display: "Fraunces Variable", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-ink);
+    color: var(--color-salt);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  a, button, [role="button"], summary, label[for], select { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  :focus-visible {
+    outline: 3px solid var(--color-brass);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-light :focus-visible { outline-color: var(--color-brass-deep); }
+  ::selection { background: var(--color-brass); color: var(--color-ink); }
+  dialog::backdrop { background: rgb(8 14 13 / 0.72); backdrop-filter: blur(3px); }
+}
+
+@layer components {
+  .container-site { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .container-site { padding-inline: 2rem; } }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 3rem; padding: 0.75rem 1.5rem; border-radius: 999px;
+    font-weight: 600; font-size: 1rem; line-height: 1.2; white-space: nowrap;
+    transition: background-color 200ms var(--ease-out-quart), color 200ms var(--ease-out-quart),
+      border-color 200ms var(--ease-out-quart), transform 200ms var(--ease-out-quart);
+  }
+  .btn:active:not(:disabled) { transform: scale(0.98); }
+  .btn-primary { background: var(--color-brass); color: var(--color-ink); }
+  .btn-primary:hover:not(:disabled) { background: var(--color-brass-2); }
+  .btn-primary:disabled { opacity: 0.55; }
+  .btn-ghost { border: 1.5px solid rgb(241 236 226 / 0.45); color: var(--color-salt); }
+  .btn-ghost:hover { border-color: var(--color-salt); background: rgb(241 236 226 / 0.08); }
+  .btn-dark { background: var(--color-ink); color: var(--color-salt); }
+  .btn-dark:hover { background: var(--color-ink-3); }
+
+  .link-underline {
+    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+    transition: color 200ms, text-decoration-color 200ms;
+  }
+  .link-underline:hover { color: var(--color-brass); }
+
+  /* Price list with dotted leaders, like the board above the mirrors */
+  .leader { flex: 1; min-width: 1.5rem; border-bottom: 2px dotted rgb(154 169 163 / 0.5); transform: translateY(-0.35em); }
+  .on-light .leader { border-bottom-color: rgb(19 32 31 / 0.3); }
+
+  .field {
+    width: 100%; min-height: 3rem; padding: 0.75rem 1rem; border-radius: 0.75rem;
+    background: var(--color-ink-2); color: var(--color-salt); border: 1.5px solid var(--color-ink-3);
+    transition: border-color 200ms;
+  }
+  .field::placeholder { color: #7f8f89; }
+  .field:hover { border-color: #3a504d; }
+  .field:focus-visible { outline: none; border-color: var(--color-brass); box-shadow: 0 0 0 3px rgb(207 165 91 / 0.35); }
+  .field[aria-invalid="true"] { border-color: var(--color-danger); }
+
+  .prose-legal h2 { font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 0.75rem; }
+  .prose-legal h3 { font-size: 1.15rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-family: var(--font-sans); font-weight: 600; }
+  .prose-legal p, .prose-legal li { color: #d6d0c4; max-width: 70ch; }
+  .prose-legal p + p { margin-top: 0.75rem; }
+  .prose-legal ul { list-style: disc; padding-left: 1.25rem; margin-top: 0.5rem; }
+  .prose-legal li + li { margin-top: 0.35rem; }
+  .prose-legal a { color: var(--color-brass); text-decoration: underline; text-underline-offset: 3px; }
+}
+
+/* The one piece of ambient motion: the barber pole turning in the hero. */
+.pole {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-pole) 0 14px,
+    var(--color-salt) 14px 28px,
+    #2f5d8a 28px 42px,
+    var(--color-salt) 42px 56px
+  );
+  height: calc(100% + 79.2px);
+  animation: pole-turn 2.4s linear infinite;
+}
+@keyframes pole-turn {
+  from { transform: translateY(-79.2px); }
+  to { transform: translateY(0); }
+}
+
+.hero-enter { animation: hero-enter 700ms var(--ease-out-quart) both; }
+.hero-enter-2 { animation: hero-enter 700ms 120ms var(--ease-out-quart) both; }
+.hero-enter-3 { animation: hero-enter 700ms 240ms var(--ease-out-quart) both; }
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.fade-in { animation: fade-in 250ms var(--ease-out-quart) both; }
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+dialog[open].modal-pop { animation: modal-pop 250ms var(--ease-out-quart) both; }
+@keyframes modal-pop {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Perforated edge on the confirmation ticket */
+.ticket-perf {
+  background-image: radial-gradient(circle at 10px 0, transparent 9px, var(--color-salt-2) 10px);
+  background-size: 20px 20px;
+  background-repeat: repeat-x;
+  height: 10px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .pole { animation: none; transform: none; }
+}
